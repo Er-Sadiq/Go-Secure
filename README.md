@@ -25,9 +25,9 @@ Install my-project with npm
 ```
 ## FAQ
 
-#### Does it Requrie Api Key
-
-Yes,it needs an API key From Virus Total as now more functionality will be added as i progress with the development
+#### Does it Require any Api Key ?
+ 
+Yes,it require an API key From Virus Total as of now ,more functionality will be added as i progress with the development
 
 ### Contribution
 Contributions are welcome! Fork the repo and submit a pull request with your enhancements.
