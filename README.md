@@ -21,8 +21,15 @@ Install my-project with npm
 ```
 ```bash
  $ sudo mv go-secure /usr/local/bin
- go-secure sd <File-Path>
+  ./go-secure
+   Enter your Name: <Your-Name>
+   Enter Your API Key :<Api Key>
+   Enter Your File Path: <file-Path>
+    
 ```
+## Demo :
+  ![GoSecure](https://github.com/Er-Sadiq/Go-Secure/assets/125464939/63110286-49e8-4339-970e-5fcbac5235bd)
+
 ## FAQ
 
 #### Does it Require any Api Key ?
