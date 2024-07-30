@@ -29,6 +29,7 @@ Enter Your File Path: <File-Path>
 ```
 
 ## Demo 🎥
+![Annotation 2024-07-30 203441](https://github.com/user-attachments/assets/65cb8e9f-c876-4567-bf9f-89240022d432)
 
 ![GoSecure](https://github.com/Er-Sadiq/Go-Secure/assets/125464939/63110286-49e8-4339-970e-5fcbac5235bd)
 
