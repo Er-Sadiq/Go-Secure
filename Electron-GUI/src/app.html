@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Main</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="chartstyle.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body class="SecondaryBg flex h-screen overflow-hidden">
+  <div class="bg-[#2b526c] h-full w-32 flex flex-col items-center justify-center text-[#39a6b0] gap-4 h-full">
+    <button class="py-1 px-2 rounded text-[#39a6b0] mt-2 mb-auto flex flex-row gap-2"><i
+        class="bi bi-arrow-left-circle-fill"></i> Back</button>
+
+    <ul class="my-auto flex flex-col gap-4 mb-14 text-[#edf9fa]">
+      <li class="flex flex-col justify-center items-center text-xs"><i
+          class="bi bi-file-earmark-plus-fill text-3xl text-[#4d9fb2]"></i>Add Files</li>
+      <li class="flex flex-col justify-center items-center text-xs"><i
+          class="bi bi-terminal-fill text-3xl text-[#4d9fb2]"></i>Terminal</li>
+      <li class="flex flex-col justify-center items-center text-xs"><i class="bi bi-boxes text-3xl text-[#4d9fb2]"></i>Request
+        Feature</li>
+      <li class="flex flex-col justify-center items-center text-xs"><i
+          class="bi bi-gear-wide-connected text-3xl text-[#4d9fb2]"></i> Settings</li>
+      <li class="flex flex-col justify-center items-center text-xs"><i class="bi bi-bug-fill text-3xl text-[#4d9fb2]"></i>Report
+        A Bug</li>
+    </ul>
+  </div>
+  <div class="w-4/5 flex flex-col h-full ">
+    <div class="TertiaryBg w-full h-20 flex items-center justify-between text-[#183A56] text-lg p-2">
+      <h1>GoSecure > Dashboard</h1>
+      <h5 id="datetime text-md"></h5>
+     
+      <p id="loginData"></p>
+      <i class="bi bi-person-bounding-box text-3xl"></i>
+
+    </div>
+
+    <div class="SecondaryBg flex flex-row py-10 px-5 items-center justify-center overflow-hidden  ">
+      <div class="flex flex-row gap-2 items-center justify-center px-5  ">
+        <div class="chart-container ml-10">
+          <canvas id="chart1"></canvas>
+          <div class="chart-text" id="chart1-text"></div>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="chart2"></canvas>
+          <div class="chart-text" id="chart2-text"></div>
+        </div>
+
+        <div class="chart-container mr-10">
+          <canvas id="chart3"></canvas>
+          <div class="chart-text" id="chart3-text"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-row gap-2 justify-center items-center mr-10">
+      Show <input id="apikey" type="password" class="h-5 border-2 border-cyan-700 rounded-lg w-80 overflow-hidden" />
+    </div>
+    <div class="flex flex-row gap-2 mx-5">
+      <div class="relative TertiaryBg my-5 rounded-lg border-2 border-cyan-700  w-72 flex flex-col items-center justify-center p-1">
+        <span class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 transform TertiaryBg px-1 text-xs ">Scan The Go Way</span>
+        <div class="flex flex-col justify-center items-center">
+          <div class="flex flex-row gap-2  my-1  items-center mr-auto mt-3">
+            <button class="text-xl text-[#183A56] ml-4" type="button" onclick="document.getElementById('fileInput').click()"> <i class="bi bi-folder-plus"></i></button>
+            <textarea id="filePath" class="w-38 h-6 rounded border-2 border-[#183A56] overflow-hidden"></textarea>
+            <input type="file" id="fileInput" class="hidden" onchange="updateFilePath()">
+          </div>
+          <p class="text-[10px]">For Your Safety, Refrain from <br />Uploading Personal Information</p>
+          <div class="flex flex-row gap-4 justify-center items-center ml-4">
+            <button type="submit" class="bg-[#15C7CB] hover:bg-blue-700 text-gray-200 font-semibold py-1 px-1 w-20 my-2 rounded-lg mx-1 transform motion-safe:hover:scale-110">Scan</button>
+            <button type="button" id="quitButton" class="bg-[#15C7CB] hover:bg-blue-700 text-gray-200 font-semibold py-1 px-1 w-20 my-2 rounded-lg mx-1 transform motion-safe:hover:scale-110">Abort</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative my-5 rounded-lg border-2 border-cyan-700 p-5 w-48 flex flex-row items-center justify-center mx-4">
+        <span class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 transform TertiaryBg px-2 text-xs">Scan Results</span>
+        <ul class="flex flex-col ">
+          <li class="flex items-center space-x-2"> <div class="w-6 h-3 bg-blue-800 rounded-sm"></div><span>Harmful</span></li>
+          <li class="flex items-center space-x-2 rounded-sm"> <div class="w-6 h-3 bg-yellow-800"></div><span>Malicious</span></li>
+          <li class="flex items-center space-x-2 rounded-sm"><div class="w-6 h-3 bg-green-800"></div><span>Infected</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.electron.onLoginData((data) => {
+    const apikeyElement = document.getElementById('apikey');
+    const loginDataElement = document.getElementById('loginData');
+    
+    if (data && typeof data === 'object') {
+      apikeyElement.value = data.apikey ? data.apikey : '';
+      loginDataElement.value = data.username
+    } else {
+      apikeyElement.value = 'No data received';
+      loginDataElement.textContent = 'No data received'; // Added for consistency
+    }
+  });
+
+    const createDoughnutChart = (ctx, labels, data, backgroundColor, textElementId) => {
+      const chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Dataset',
+            data: data,
+            backgroundColor: backgroundColor,
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          cutout: '85%',
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              enabled: false
+            }
+          }
+        }
+      });
+
+      const total = data.reduce((acc, val) => acc + val, 0);
+      const percentage = Math.round((data[0] / total) * 100);
+      document.getElementById(textElementId).textContent = `${percentage}%`;
+    };
+
+    createDoughnutChart(
+      document.getElementById('chart1').getContext('2d'),
+      ['Infected', 'Clean'],
+      [30, 70],
+      ['#FC4100', '#15C7CB'],
+      'chart1-text'
+    );
+
+    createDoughnutChart(
+      document.getElementById('chart2').getContext('2d'),
+      ['Infected', 'Clean'],
+      [50, 50],
+      ['#FBA834', '#15C7CB'],
+      'chart2-text'
+    );
+
+    createDoughnutChart(
+      document.getElementById('chart3').getContext('2d'),
+      ['Infected', 'Clean'],
+      [70, 30],
+      ['#FF6384', '#15C7CB'],
+      'chart3-text'
+    );
+  </script>
+</body>
+
+</html>

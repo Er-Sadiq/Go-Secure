@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link rel="stylesheet" href="index.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="PrimaryBg flex flex-col justify-center items-center overflow-hidden h-screen">
+  <h1 class="text-center textPy relative bottom-8 font-bold">GoSecure <i class="bi bi-shield-fill-check"></i></h1>
+ <div class="w-72 h-60 SecondaryBg rounded-lg flex flex-col justify-center items-center shadow-[5px_5px_0px_0px_rgba(250,250,250)]">
+  <p class="text-[10px] font-medium my-1">Please Provide Your Details To Authenticate & Register</p>
+  <form id="loginForm" class="flex flex-col gap-4  my-1 relative top-2">
+    <input type="text" id="username" placeholder="Enter Your Name" required class="rounded-md w-60 h-8 border-2 border-slate-700 p-2" />
+    <input type="text" id="apikey" placeholder="Enter Your API-Key" required class="rounded-md w-60 h-8 border-2 border-slate-700 p-2 " />
+    <p id="invaildstatus">API Key Invalid</p>
+    <p id="faq" onclick="faqFun()" class="text-xs relative bottom-6 ml-2">Enter Api Key ?.</p>   
+   <div class="flex flex-row gap-3 relative bottom-8 ">
+    <button type="submit" class="h-8 w-28  bg-[#15C7CB] text-gray-100 rounded-md font-semibold">Submit</button>
+    <button type="" class="h-8 w-28  bg-[#15C7CB] text-gray-100 rounded-md font-semibold">Quit</button>
+   </div>
+  </form>
+</div>
+  <script>
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const apikey = document.getElementById('apikey').value;
+      const invaildstatus = document.getElementById('invaildstatus');
+      if (apikey.length >= 18) {
+        window.electron.sendLoginData(username, apikey);
+        invaildstatus.style.visibility = "hidden"; 
+      } else {
+        invaildstatus.style.visibility = "visible";
+      }
+    });
+  </script>
+</body>
+</html>
